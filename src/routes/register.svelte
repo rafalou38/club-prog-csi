@@ -66,11 +66,11 @@
 				</div>
 			</div>
 			<div>
-				<label for="name" class="block text-sm font-medium text-gray-700">Nom</label>
+				<label for="last_name" class="block text-sm font-medium text-gray-700">Nom</label>
 				<div class="mt-1 relative rounded-md shadow-sm">
 					<input
 						type="text"
-						id="name"
+						id="last_name"
 						name="nom"
 						bind:value={last_name}
 						class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 pr-12 sm:text-sm border-gray-300 rounded-md"
@@ -78,11 +78,11 @@
 				</div>
 			</div>
 			<div>
-				<label for="surname" class="block text-sm font-medium text-gray-700">Prénom</label>
+				<label for="first_name" class="block text-sm font-medium text-gray-700">Prénom</label>
 				<div class="mt-1 relative rounded-md shadow-sm">
 					<input
 						type="text"
-						id="surname"
+						id="first_name"
 						name="prénom"
 						bind:value={first_name}
 						class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 pr-12 sm:text-sm border-gray-300 rounded-md"

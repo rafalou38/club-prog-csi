@@ -97,7 +97,10 @@
 			Ce site à été entièrement réalisé par moi en
 			<a href="https://svelte.dev/" class="text-orange-600 font-semibold">svelte</a> et avec
 			<a href="https://supabase.com/" class="text-blue-600 font-semibold">supabase</a>, pour
-			l'occasion. <a href="https://github.com/rafalou38/club-prog-csi">code</a>
+			l'occasion.
+			<a href="https://github.com/rafalou38/club-prog-csi" class="text-indigo-600 font-semibold"
+				>code</a
+			>
 		</p>
 	</div>
 </div>
