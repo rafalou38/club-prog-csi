@@ -12,7 +12,9 @@
 </script>
 
 <div class="bg-gray-50 h-full">
-	<div class="relative h-full max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+	<div
+		class="flex flex-col relative min-h-full max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:pt-16 lg:px-8"
+	>
 		<div class="mb-8 lg:flex lg:items-center lg:justify-between">
 			<h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
 				<span class="block">Club programmation CSI</span>
@@ -83,7 +85,8 @@
 				</div>
 			</div>
 		{/await}
-		<p class="absolute bottom-0 text-center w-full my-6">
+		<div class="grow h-16" />
+		<p class="text-center w-ful">
 			Pour vous désinscrire ou poser des questions: <a
 				href="mailto:rafael.martinezcalvo@orange.fr"
 				class="text-indigo-600 font-semibold"
