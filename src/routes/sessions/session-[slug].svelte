@@ -37,7 +37,9 @@
 	/>
 </svelte:head>
 
-<div class="main flex flex-col mx-auto max-w-5xl bg-white border border-gray-200">
+<div
+	class="main flex flex-col mx-auto max-w-5xl bg-white border border-gray-200 border-t-0 border-b-0"
+>
 	<div class="border-b border-b-gray-200">
 		<ListItem
 			title={post.title}
