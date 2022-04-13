@@ -1,0 +1,21 @@
+---
+title: Introduction
+date: 2022-04-14T13:00:00
+tags: [processing]
+description: Premiere session du club programmation et logique, ouverture et présentation du club.
+image_url: https://www.rent-my-boat.fr/wp-content/uploads/2020/08/placeholder.png
+---
+
+<script>export let title="Introduction";</script>
+
+# {title}
+
+Bienvenue dans le club Programation et Logique 🤗
+
+## Nos objectifs
+
+- Découvrir des languages de Programation
+  - Python
+  - Javascript
+  - Java
+- Des outils de développement
