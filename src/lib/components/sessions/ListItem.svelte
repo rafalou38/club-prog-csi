@@ -12,8 +12,8 @@
 
 <div
 	class="flex items-stretch {embeded
-		? 'shadow cursor-pointer hover:bg-gray-50'
-		: ''} rounded-md overflow-hidden bg-white  transition-colors"
+		? ''
+		: 'shadow cursor-pointer hover:bg-gray-50'} rounded-md overflow-hidden bg-white  transition-colors"
 >
 	<div class="grow pt-4 pb-8 px-5">
 		<div class="flex pb-1">

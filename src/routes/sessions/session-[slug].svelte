@@ -44,7 +44,7 @@
 			tags={post.tags}
 			description={post.description}
 			image_url={post.image_url}
-			embeded={false}
+			embeded={true}
 		/>
 	</div>
 	<div class="markdown-body py-6 px-8">
