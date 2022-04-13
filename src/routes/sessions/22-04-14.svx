@@ -3,7 +3,7 @@ title: Introduction
 date: 2022-04-14T13:00:00
 tags: [processing]
 description: Premiere session du club programmation et logique, ouverture et présentation du club.
-image_url: https://www.rent-my-boat.fr/wp-content/uploads/2020/08/placeholder.png
+image_url: https://www.programmerszone.ae/wp-content/uploads/2021/10/programming-evolution.jpg
 ---
 
 <script>export let title="Introduction";</script>
