@@ -1,12 +1,10 @@
 ---
-title: Introduction
+title: Introduction - Newton
 date: 2022-04-14T13:00:00
 tags: [processing]
-description: Premiere session du club programmation et logique, ouverture et présentation du club.
-image_url: https://www.programmerszone.ae/wp-content/uploads/2021/10/programming-evolution.jpg
+description: Ouverture et présentation du club, puis découverte de processing avec simulation d'une boule suivant les lois du mouvement de newton.
+image_url: 
 ---
-
-<script>export let title="Introduction";</script>
 
 # {title}
 
@@ -19,3 +17,190 @@ Bienvenue dans le club Programation et Logique 🤗
   - Javascript
   - Java
 - Des outils de développement
+  - Processing
+  - P5.js
+- Participer a des concours
+  - [IOI](http://www.france-ioi.org/)
+    - [Algoréa](https://www.algorea.org/main.html)
+- Faire des activitées sur des sites pour s'améliorer en programmation:
+  - [CodeWars](https://www.codewars.com/)
+  - [Project Euler](https://projecteuler.net/)
+  - [CodinGame](https://www.codingame.com/)
+- Faire des sites web
+
+
+## Session: **Découverte de processing**
+
+ 
+Nous avons simulé une boule afféctée par la gravité et autres forces en suivant les [Lois du mouvement de newton](https://fr.wikipedia.org/wiki/Lois_du_mouvement_de_Newton) sur [processing](https://processing.org/).
+
+
+### Première loi: **Inèrtie**
+> « Tout corps persévère dans l'état de repos ou de mouvement uniforme en ligne droite dans lequel il se trouve, à moins que quelque force n'agisse sur lui, et ne le contraigne à changer d'état. »
+- L'inértie est uniforme si aucune force est apliqué à l'objet.
+- La sommes des force forces externes est ajouté a l'inertie.
+### Deuxième loi: **dynamique de translation**
+> « Les changements qui arrivent dans le mouvement sont proportionnels à la force motrice ; et se font dans la ligne droite dans laquelle cette force a été imprimée. »
+- La force nécesaire pour déplacer un objet est proportionelle a sa masse:
+  - la masse des forces externes est divisée pas la masse de l'objet
+### Troisième loi: **action-réaction**
+> « L'action est toujours égale à la réaction ; c'est-à-dire que les actions de deux corps l'un sur l'autre sont toujours égales et de sens contraires. »
+- Collisions: inversion de la force de l'objet
+
+
+## Code:
+```java
+// ### Fichier principal avec setup et draw ###
+
+// Nombre de cercles à afficher
+int OBJECT_CNT = 10;
+
+// Force de la gravité
+float GRAVITY = 0.2f;
+// Quoéfficient de réstitution des murs, a quel point ils rebondissent
+float WALLS_RESTITUTION = 0.6f;
+
+// Liste contenant tous les cercles
+Object[] objects;
+
+
+// Variables pour l'ajout de force par glissement
+PVector start_drag; // Position du début du glissement
+boolean dragging = false; // En train de glisser?
+
+public void setup() {
+  size(600, 600);
+  // Initialisation de la liste de cercles
+  objects = new Object[OBJECT_CNT];
+  for (int i = 0; i < objects.length; i++) {
+    // valeurs aléatoires   x            , y             , masse
+    objects[i] = new Object(random(width), random(height), random(1, 10));
+    // Toutes les balles commencent avec une force aléatoire
+    objects[i].applyForce(new PVector(random( -10, 10), random( -10, 10)));
+  }
+}
+
+public void draw() {
+  // Réinitialisation
+  background(200);
+  stroke(0); // Couleur des bordures
+  fill(255); // Couleur de remplissage des formes
+  strokeWeight(2); // Largeur des bordures
+
+  // Boucle travérsant tous les objets
+  for (int i = 0; i < objects.length; i++) {
+    objects[i].update(); // Mets a jour tous les objets
+    objects[i].show(); // les affiche
+  }
+
+  // affichage de la fleche de lissement
+  if (dragging) {
+    stroke(0, 200, 255 );
+    fill(0, 200, 255);
+    int startMarkerSize = 10;
+    rect(start_drag.x - startMarkerSize/2, start_drag.y - startMarkerSize/2, startMarkerSize, startMarkerSize);
+    line(start_drag.x, start_drag.y, mouseX, mouseY);
+  }
+}
+
+// commencer a glisser quand le bouton de la souris est appuyé
+public void mousePressed() {
+  start_drag = new PVector(mouseX, mouseY);
+  dragging = true;
+}
+
+// aréter le glissement et appliquer la force
+public void mouseReleased() {
+  PVector force = new PVector(
+    mouseX - start_drag.x,
+    mouseY - start_drag.y
+    ).div(2);
+
+  for (int i = 0; i < objects.length; i++) {
+    objects[i].applyForce(force);
+  }
+
+  // Plus de glissement
+  start_drag = null;
+  dragging = false;
+}
+
+
+// réinitialisation des balles
+public void keyPressed() {
+  if (key == 'r') {
+    println("reset");
+    for (int i = 0; i < objects.length; i++) {
+      objects[i].vel.mult(0);
+    }
+  }
+}
+```
+```java
+// Fichier avec la classe objet
+public class Object {
+  // position, vélocité, accéleration
+  // L'accéleration est réinitialisée a chaque fois, elle correspond a la somme de toutes les forces appliquées sur l'objet.
+  PVector pos, vel, acc;
+  float mass;
+  float radius;
+
+  Object(float x, float y, float m) {
+    // fonction éxécutée quand l'objet est crée
+    pos = new PVector(x, y);
+    vel = new PVector(0, 0);
+    acc = new PVector(0, 0);
+    mass = m;
+    radius = m * 10;
+  }
+
+  void applyForce(PVector force) {
+    PVector f = PVector.div(force, mass);
+    acc.add(f);
+  }
+
+  void update() {
+    // On a joute la gravité a la velocité, ! pas divisé par la masse !
+    vel.y += GRAVITY;
+
+    // On applique l'accéleration a la vélocité
+    vel.add(acc);
+
+    // On vérifie les colisions
+    collide();
+
+    // On applique la vélocité a la position
+    pos.add(vel);
+
+    // On réinitialise l'acceleration
+    acc.mult(0);
+  }
+
+  // Verification des colisions avec les murs
+  void collide() {
+    float bottom = height - radius / 2;
+    float right = width - radius / 2;
+    float left = radius / 2;
+    float top = radius / 2;
+
+    if (pos.y >= bottom) {
+      vel.y *= -WALLS_RESTITUTION;
+      pos.y = bottom;
+    } else if (pos.y <= top) {
+      vel.y *= -WALLS_RESTITUTION;
+      pos.y = top;
+    } else if (pos.x >= right) {
+      vel.x *= -WALLS_RESTITUTION;
+      pos.x = right;
+    } else if (pos.x <= left) {
+      vel.x *= -WALLS_RESTITUTION;
+      pos.x = left;
+    }
+  }
+
+  void show() {
+    ellipse(pos.x, pos.y, radius, radius);
+  }
+}
+```
+
