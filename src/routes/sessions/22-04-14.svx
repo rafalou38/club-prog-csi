@@ -39,14 +39,17 @@ Nous avons simulé une boule afféctée par la gravité et autres forces en suiv
 
 ### Première loi: **Inèrtie**
 > « Tout corps persévère dans l'état de repos ou de mouvement uniforme en ligne droite dans lequel il se trouve, à moins que quelque force n'agisse sur lui, et ne le contraigne à changer d'état. »
+
 - L'inértie est uniforme si aucune force est apliqué à l'objet.
 - La sommes des force forces externes est ajouté a l'inertie.
 ### Deuxième loi: **dynamique de translation**
 > « Les changements qui arrivent dans le mouvement sont proportionnels à la force motrice ; et se font dans la ligne droite dans laquelle cette force a été imprimée. »
+
 - La force nécesaire pour déplacer un objet est proportionelle a sa masse:
   - la masse des forces externes est divisée pas la masse de l'objet
 ### Troisième loi: **action-réaction**
 > « L'action est toujours égale à la réaction ; c'est-à-dire que les actions de deux corps l'un sur l'autre sont toujours égales et de sens contraires. »
+
 - Collisions: inversion de la force de l'objet
 
 
