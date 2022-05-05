@@ -12,15 +12,22 @@
 
 	let error = "";
 
+	let loading = false;
+
 	async function submit() {
 		if (!last_name || !first_name || !class_name) {
 			error = "Veuillez remplir tous les champs";
 			return;
 		}
+
+		loading = true;
+
 		const result = await register(first_name, last_name, class_name);
 
-		if (!result.error) goto("/");
-		else error = result.error.message;
+		if (!result.error) return goto("/");
+
+		loading = false;
+		error = result.error.message;
 	}
 </script>
 
@@ -97,7 +104,10 @@
 				<div class="inline-flex rounded-md shadow">
 					<button
 						type="submit"
-						class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-semibold rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+						disabled={loading}
+						class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-semibold rounded-md text-white bg-indigo-600 hover:bg-indigo-700 {loading
+							? 'opacity-50 cursor-not-allowed'
+							: ''}"
 					>
 						S'inscrire
 					</button>
@@ -106,3 +116,4 @@
 		</form>
 	</div>
 </div>
+

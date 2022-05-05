@@ -1,31 +1,12 @@
-<script context="module">
-	import { getPost } from "./posts";
-
-	/** @type {import('./[slug]').Load} */
-	export async function load({ params, fetch, session, stuff }) {
-		const post = await getPost(params.slug);
-		if (post)
-			return {
-				status: 200,
-				props: {
-					post,
-				},
-			};
-		else
-			return {
-				status: 404,
-				props: {},
-			};
-	}
-</script>
-
 <script lang="ts">
 	import ListItem from "$lib/components/sessions/ListItem.svelte";
-	import type { IPostFull } from "$lib/types/post";
 	import Icon from "@iconify/svelte";
 
-	export let post: IPostFull;
-	let Renderer = post.renderer;
+	export let title = "";
+	export let date = "";
+	export let tags = [];
+	export let description = "";
+	export let image_url = "";
 </script>
 
 <svelte:head>
@@ -41,17 +22,10 @@
 	class="main flex flex-col mx-auto max-w-5xl bg-white border border-gray-200 border-t-0 border-b-0"
 >
 	<div class="border-b border-b-gray-200">
-		<ListItem
-			title={post.title}
-			date={new Date(post.date)}
-			tags={post.tags}
-			description={post.description}
-			image_url={post.image_url}
-			embeded={true}
-		/>
+		<ListItem {title} date={new Date(date)} {tags} {description} {image_url} embeded={true} />
 	</div>
 	<div class="markdown-body py-6 px-8">
-		<Renderer />
+		<slot />
 	</div>
 	<div class="grow" />
 	<a href="/sessions" class="mx-auto my-4 w-max flex items-center gap-2 uppercase font-semibold">

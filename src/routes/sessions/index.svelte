@@ -21,7 +21,7 @@
 	{:then posts}
 		{#each posts as post}
 			<!-- content here -->
-			<a href="/sessions/session-{post.slug}">
+			<a href="/sessions/{post.slug}">
 				<ListItem
 					title={post.title}
 					date={new Date(post.date)}

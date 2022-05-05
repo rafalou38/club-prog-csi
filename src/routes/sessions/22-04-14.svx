@@ -4,6 +4,8 @@ date: 2022-04-14T13:00:00
 tags: [processing]
 description: Ouverture et présentation du club, puis découverte de processing avec simulation d'une boule suivant les lois du mouvement de newton.
 image_url: https://res.cloudinary.com/dr844cxrp/image/upload/v1649958716/out_shooyn.gif
+
+layout: session
 ---
 
 # {title}
@@ -11,6 +13,8 @@ image_url: https://res.cloudinary.com/dr844cxrp/image/upload/v1649958716/out_sho
 Bienvenue dans le club Programation et Logique 🤗
 
 ## Nos objectifs
+
+
 
 - Découvrir des languages de Programation
   - Python
