@@ -2,7 +2,7 @@
 title: Les merveilles d'HTML
 date: 2022-05-05T13:00:00
 tags: [web]
-description: Découverte des folies réalisables avec la force de l'aliance HTMLxCSSxJavaScript 
+description: Découverte des folies réalisables avec la force de l'aliance HTMLxCSSxJavaScript
 image_url: https://s3.amazonaws.com/s3.timetoast.com/public/uploads/photos/8663460/html_logo.jpg?1478647179
 
 layout: session
@@ -10,142 +10,202 @@ layout: session
 
 # {title}
 
-Pendant cette session chaqun a   tenté de realiser son propre sit web apres avoir vu les bases du web.
+Pendant cette session chaqun a tenté de realiser son propre sit web apres avoir vu les bases du web.
 
 ## Notions vues lors de la session
 
 ### HTML
+
+#### Titres:
+
 ```html
-Titres:
 <h1>Titre1</h1>
 <h2>Titre2</h2>
 <h3>Titre3</h3>
 <h4>Titre4</h4>
-
-
-Paragraphe:
-<p>contenu</p>
-
-
-Bouton:
-<button>contenu</button>
-
-Image:
-<img src="url de l'image"/>
-
-
-
-
-Styles (css):
-<style>
-  /* CODE CSS ICI */
-</style>
-
-Scripts (JavaScript):
-<script>
-  /* CODE JS ICI */
-</script>
-
 ```
 
+#### Paragraphe:
+
+```html
+<p>contenu</p>
+```
+
+#### Bouton:
+
+```html
+<button>contenu</button>
+```
+
+#### Image:
+
+```html
+<img src="url de l'image" />
+```
+
+#### Styles (css):
+
+```html
+<style>
+	/* CODE CSS ICI */
+</style>
+```
+
+#### Scripts (JavaScript):
+
+```html
+<script>
+	/* CODE JS ICI */
+</script>
+```
 
 ### CSS
-```css
-/* Sélectionner un element directement */
-body{}
 
-/* Sélectionner un element par nom de classe */
-.class{}
+#### Sélectionner un element directement
 
-/* Sélectionner un element par id */
-#id{}
-
-element{
-  /* Couleur du texte */
-  color: red;
-
-  /* espacement interieur */
-  padding: 10px;
-
-  /* espacement exterieur */
-  margin: 10px;
-
-  /* taille */
-  width: 10px;
-  height: 10px;
-
-  /* taille de la police */
-  font-size: 20px;
-
-  /* police */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+```scss
+body {
 }
-
 ```
+
+#### Sélectionner un element par nom de classe
+
+```scss
+.class {
+}
+```
+
+#### Sélectionner un element par id
+
+```scss
+#id {
+}
+```
+
+#### Quelques regles de style possibles
+
+```scss
+element {
+	/* Couleur du texte */
+	color: red;
+
+	/* espacement interieur */
+	padding: 10px;
+
+	/* espacement exterieur */
+	margin: 10px;
+
+	/* taille */
+	width: 10px;
+	height: 10px;
+
+	/* taille de la police */
+	font-size: 20px;
+
+	/* police */
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+```
+
 ### JavaScript
+
+#### Variable
+
 ```js
-// ## Variable
 let nomDeVariable = "valeur";
+```
 
-// ## Récupérer un element
+#### Récupérer un element
+
+```js
 let nomDeVariable = document.querySelector(/* sélecteur css*/ "#id");
+```
 
+#### Boucles
 
-// ## Boucles
-while(condition){
-  // code à exécuter
+```js
+while (condition) {
+	// code à exécuter
 }
 
 // Boucle for e in ...
-for(let e in liste){
-  // code à exécuter
+for (let e in liste) {
+	// code à exécuter
 }
 
 // Boucle for i in range(nombre)
-for(let i = 0; i < nombre; i++){
-  // code à exécuter
+for (let i = 0; i < nombre; i++) {
+	// code à exécuter
 }
+```
 
-// ## Nombre aleatoire
+#### Nombre aleatoire
 
-Math.random() // retourne un nombre a virgule entre 0 et 1
+```js
+Math.random(); // retourne un nombre a virgule entre 0 et 1
 
 // donc pour avoir un nombre aleatoire entre 0 et 10
 Math.random() * 10;
 
 // et pour avoir un nombre aleatoire entre disons 3 et 7
 Math.random() * (7 - 3) + 3;
+```
 
+#### Manipulation de la page
 
-// ## Manipulation de la page
-let element = document.querySelector(/* sélecteur css*/ );
+pour recupperer un element:
 
+```js
+let element = document.querySelector(/* sélecteur css*/);
+```
+
+on peut ensuite mofifier son contenu:
+
+```js
 // changer le texte
-element.textContent  = "texte"; // ou
+element.textContent = "texte"; // ou
 element.innerText = "texte";
+```
 
+Ou son apparence
+
+```js
 // tous les styles peuvent être changés via
-element.style
+element.style;
 
 // font-size devient fontSize, box-sizing devient boxSizing, etc...
 element.style.color = "red";
 element.style.width = "10px";
 element.style.fontSize = "20px";
+```
 
+Pour le faire disparaitre un element plusieures options:
 
-// pour ajouter des elements dans la page
+```js
+element.style.opacity = 0; // rends l'elemet invisible
+element.style.display = "none"; // retire l'element de l'affichage
+element.remove(); // retire l'element de la page
+```
+
+#### pour ajouter des elements dans la page
+
+```js
 let element = document.createElement(/* tag de l'element (p, div, img...) */);
 document.body //  dans quel element on veut ajouter l'element > body
-  .appendChild(element);
+	.appendChild(element);
 
 // (
-document.querySelector('body')
+document.querySelector("body");
 // =
-document.body
+document.body;
 // )
+```
 
+#### Écouter un événement
 
-// Écouter un événement
+Pour detecter une action de l'utilisateur _(ex: click sur un boutton)_ ou tout autre evenement:
+
+```js
 let bouton = document.querySelector('button');
 bouton.addEventListener('click', function(){
   // code à exécuter
@@ -160,5 +220,4 @@ function(){};
 // =
 () => {}
 // )
-
 ```
