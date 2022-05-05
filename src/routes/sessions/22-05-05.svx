@@ -1,0 +1,164 @@
+---
+title: Les merveilles d'HTML
+date: 2022-05-05T13:00:00
+tags: [web]
+description: Découverte des folies réalisables avec la force de l'aliance HTMLxCSSxJavaScript 
+image_url: https://s3.amazonaws.com/s3.timetoast.com/public/uploads/photos/8663460/html_logo.jpg?1478647179
+
+layout: session
+---
+
+# {title}
+
+Pendant cette session chaqun a   tenté de realiser son propre sit web apres avoir vu les bases du web.
+
+## Notions vues lors de la session
+
+### HTML
+```html
+Titres:
+<h1>Titre1</h1>
+<h2>Titre2</h2>
+<h3>Titre3</h3>
+<h4>Titre4</h4>
+
+
+Paragraphe:
+<p>contenu</p>
+
+
+Bouton:
+<button>contenu</button>
+
+Image:
+<img src="url de l'image"/>
+
+
+
+
+Styles (css):
+<style>
+  /* CODE CSS ICI */
+</style>
+
+Scripts (JavaScript):
+<script>
+  /* CODE JS ICI */
+</script>
+
+```
+
+
+### CSS
+```css
+/* Sélectionner un element directement */
+body{}
+
+/* Sélectionner un element par nom de classe */
+.class{}
+
+/* Sélectionner un element par id */
+#id{}
+
+element{
+  /* Couleur du texte */
+  color: red;
+
+  /* espacement interieur */
+  padding: 10px;
+
+  /* espacement exterieur */
+  margin: 10px;
+
+  /* taille */
+  width: 10px;
+  height: 10px;
+
+  /* taille de la police */
+  font-size: 20px;
+
+  /* police */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+```
+### JavaScript
+```js
+// ## Variable
+let nomDeVariable = "valeur";
+
+// ## Récupérer un element
+let nomDeVariable = document.querySelector(/* sélecteur css*/ "#id");
+
+
+// ## Boucles
+while(condition){
+  // code à exécuter
+}
+
+// Boucle for e in ...
+for(let e in liste){
+  // code à exécuter
+}
+
+// Boucle for i in range(nombre)
+for(let i = 0; i < nombre; i++){
+  // code à exécuter
+}
+
+// ## Nombre aleatoire
+
+Math.random() // retourne un nombre a virgule entre 0 et 1
+
+// donc pour avoir un nombre aleatoire entre 0 et 10
+Math.random() * 10;
+
+// et pour avoir un nombre aleatoire entre disons 3 et 7
+Math.random() * (7 - 3) + 3;
+
+
+// ## Manipulation de la page
+let element = document.querySelector(/* sélecteur css*/ );
+
+// changer le texte
+element.textContent  = "texte"; // ou
+element.innerText = "texte";
+
+// tous les styles peuvent être changés via
+element.style
+
+// font-size devient fontSize, box-sizing devient boxSizing, etc...
+element.style.color = "red";
+element.style.width = "10px";
+element.style.fontSize = "20px";
+
+
+// pour ajouter des elements dans la page
+let element = document.createElement(/* tag de l'element (p, div, img...) */);
+document.body //  dans quel element on veut ajouter l'element > body
+  .appendChild(element);
+
+// (
+document.querySelector('body')
+// =
+document.body
+// )
+
+
+// Écouter un événement
+let bouton = document.querySelector('button');
+bouton.addEventListener('click', function(){
+  // code à exécuter
+});
+// ou
+bouton.onclick = function(){
+  // code à exécuter
+};
+
+// (
+function(){};
+// =
+() => {}
+// )
+
+```
