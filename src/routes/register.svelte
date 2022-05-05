@@ -2,27 +2,28 @@
 	import { goto } from "$app/navigation";
 	import Modal from "$lib/components/Modal.svelte";
 
-	import { register } from "$lib/supabase/characters";
-
 	import Icon from "@iconify/svelte";
+	import { signInWithEmail } from "$lib/supabase/auth";
 
 	let last_name = "";
 	let first_name = "";
 	let class_name = "2de1";
+	let email = "";
+	let password = "";
 
 	let error = "";
 
 	let loading = false;
 
 	async function submit() {
-		if (!last_name || !first_name || !class_name) {
+		if (!last_name || !first_name || !class_name || !email || !password) {
 			error = "Veuillez remplir tous les champs";
 			return;
 		}
 
 		loading = true;
 
-		const result = await register(first_name, last_name, class_name);
+		const result = await signInWithEmail(first_name, last_name, class_name, email, password);
 
 		if (!result.error) return goto("/");
 
@@ -72,28 +73,56 @@
 					</select>
 				</div>
 			</div>
-			<div>
-				<label for="last_name" class="block text-sm font-medium text-gray-700">Nom</label>
-				<div class="mt-1 relative rounded-md shadow-sm">
-					<input
-						type="text"
-						id="last_name"
-						name="nom"
-						bind:value={last_name}
-						class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 pr-12 sm:text-sm border-gray-300 rounded-md"
-					/>
+			<div class="flex flex-wrap gap-2">
+				<div class="grow">
+					<label for="last_name" class="block text-sm font-medium text-gray-700">Nom</label>
+					<div class="mt-1 relative rounded-md shadow-sm">
+						<input
+							type="text"
+							id="last_name"
+							name="nom"
+							bind:value={last_name}
+							class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 pr-12 sm:text-sm border-gray-300 rounded-md"
+						/>
+					</div>
+				</div>
+				<div class="grow">
+					<label for="first_name" class="block text-sm font-medium text-gray-700">Prénom</label>
+					<div class="mt-1 relative rounded-md shadow-sm">
+						<input
+							type="text"
+							id="first_name"
+							name="prénom"
+							bind:value={first_name}
+							class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 pr-12 sm:text-sm border-gray-300 rounded-md"
+						/>
+					</div>
 				</div>
 			</div>
-			<div>
-				<label for="first_name" class="block text-sm font-medium text-gray-700">Prénom</label>
-				<div class="mt-1 relative rounded-md shadow-sm">
-					<input
-						type="text"
-						id="first_name"
-						name="prénom"
-						bind:value={first_name}
-						class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 pr-12 sm:text-sm border-gray-300 rounded-md"
-					/>
+			<div class="flex flex-wrap gap-2">
+				<div class="grow">
+					<label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+					<div class="mt-1 relative rounded-md shadow-sm">
+						<input
+							type="email"
+							id="email"
+							name="email"
+							bind:value={email}
+							class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 pr-12 sm:text-sm border-gray-300 rounded-md"
+						/>
+					</div>
+				</div>
+				<div class="grow">
+					<label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+					<div class="mt-1 relative rounded-md shadow-sm">
+						<input
+							type="password"
+							id="password"
+							name="password"
+							bind:value={password}
+							class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 pr-12 sm:text-sm border-gray-300 rounded-md"
+						/>
+					</div>
 				</div>
 			</div>
 			<p class="my-4 text-gray-700">
@@ -113,7 +142,7 @@
 					</button>
 				</div>
 			</div>
+			<a href="/login" class="text-indigo-600 text-center">j'ai deja un compte</a>
 		</form>
 	</div>
 </div>
-

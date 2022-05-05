@@ -1,4 +1,6 @@
 <script>
+	import { user } from "$lib/supabase/auth";
+
 	import Icon from "@iconify/svelte";
 </script>
 
@@ -10,11 +12,18 @@
 		/>
 	</a>
 	<div class="grow" />
-	<a
-		href="/register"
-		class="flex items-center text-white gap-2 py-2 px-4  rounded hover:bg-indigo-500"
-	>
-		S'inscrire
-		<Icon icon="heroicons-solid:user-circle" class="text-2xl text-whitebox-content" />
-	</a>
+
+	{#if user}
+		<a href="/register" class="flex items-center text-white gap-2 p-2  rounded hover:bg-indigo-500">
+			<Icon icon="heroicons-solid:user" class="text-2xl text-whitebox-content" />
+		</a>
+	{:else}
+		<a
+			href="/register"
+			class="flex items-center text-white gap-2 py-2 px-4  rounded hover:bg-indigo-500"
+		>
+			S'inscrire
+			<Icon icon="heroicons-solid:user-circle" class="text-2xl text-whitebox-content" />
+		</a>
+	{/if}
 </div>

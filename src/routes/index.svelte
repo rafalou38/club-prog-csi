@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from "$app/env";
-	import { getMembers, type IMember } from "$lib/supabase/characters";
+	import { getMembers, type IMember } from "$lib/supabase/members";
 	import Icon from "@iconify/svelte";
 
 	let membersPromise = Promise.resolve([] as IMember[]);
