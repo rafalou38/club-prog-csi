@@ -13,8 +13,8 @@
 	</a>
 	<div class="grow" />
 
-	{#if user}
-		<a href="/register" class="flex items-center text-white gap-2 p-2  rounded hover:bg-indigo-500">
+	{#if $user}
+		<a href="/profile" class="flex items-center text-white gap-2 p-2  rounded hover:bg-indigo-500">
 			<Icon icon="heroicons-solid:user" class="text-2xl text-whitebox-content" />
 		</a>
 	{:else}

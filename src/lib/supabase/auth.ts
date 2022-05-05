@@ -3,7 +3,8 @@ import { writable } from "svelte/store";
 import { supabase } from "./client";
 import type { IMember } from "./members";
 
-export const user = writable<User | null>(null);
+export const user = writable<(User & IMember) | null>(null);
+
 export async function signInWithEmail(
 	first_name: string,
 	last_name: string,
@@ -27,6 +28,31 @@ export async function signInWithEmail(
 
 	if (memberResult.error) return { error: memberResult.error };
 
-	user.set(memberResult.data.at(0));
-	return { member: memberResult.data.at(0) };
+	user.set({ ...memberResult.data.at(0), ...authResult.user });
+
+	return { ...memberResult.data.at(0), ...authResult.user };
+}
+
+export async function logOut(
+) {
+	supabase.auth.signOut();
+	user.set(null);
+}
+export async function logIn(
+	email: string,
+	password: string,
+): Promise<{ member?: IMember; error?: PostgrestError | ApiError }> {
+	const authResult = await supabase.auth.signIn({
+		email: email,
+		password: password,
+	});
+
+	if (authResult.error) return { error: authResult.error };
+
+	const memberResult = await supabase.from("members").select("*").eq("uuid", authResult.user.id);
+
+	if (memberResult.error) return { error: memberResult.error };
+
+	user.set({ ...memberResult.data.at(0), ...authResult.user });
+	return { ...memberResult.data.at(0), ...authResult.user };
 }

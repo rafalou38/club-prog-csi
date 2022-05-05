@@ -3,11 +3,8 @@
 	import Modal from "$lib/components/Modal.svelte";
 
 	import Icon from "@iconify/svelte";
-	import { signInWithEmail } from "$lib/supabase/auth";
+	import { logIn } from "$lib/supabase/auth";
 
-	let last_name = "";
-	let first_name = "";
-	let class_name = "2de1";
 	let email = "";
 	let password = "";
 
@@ -16,14 +13,14 @@
 	let loading = false;
 
 	async function submit() {
-		if (!last_name || !first_name || !class_name || !email || !password) {
+		if (!email || !password) {
 			error = "Veuillez remplir tous les champs";
 			return;
 		}
 
 		loading = true;
 
-		const result = await signInWithEmail(first_name, last_name, class_name, email, password);
+		const result = await logIn(email, password);
 
 		if (!result.error) return goto("/");
 
