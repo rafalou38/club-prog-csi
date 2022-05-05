@@ -12,6 +12,20 @@ layout: session
 
 Pendant cette session chaqun a tenté de realiser son propre sit web apres avoir vu les bases du web.
 
+## Pages crées
+
+### Rafael
+
+### Alexandre
+
+### Fabio
+
+### Michael
+
+### Yann
+
+### Luca
+
 ## Notions vues lors de la session
 
 ### HTML

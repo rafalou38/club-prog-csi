@@ -2,7 +2,7 @@ import type { SvelteComponent } from "svelte";
 
 export interface IPost {
 	title: string;
-	date: Date;
+	date: string;
 	tags: string[];
 	description: string;
 	image_url: string;

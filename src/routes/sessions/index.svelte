@@ -2,9 +2,12 @@
 	import ListItem from "$lib/components/sessions/ListItem.svelte";
 	import Tag from "$lib/components/Tag.svelte";
 	import { tags } from "$lib/components/tags";
+	import { months } from "$lib/utils/months";
 	import { getPosts } from "./posts";
 
 	const posts_promise = getPosts();
+
+	let lastMonth: number;
 </script>
 
 <div class="flex flex-col relative min-h-full max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:pt-8 lg:px-8">
@@ -15,12 +18,16 @@
 		{/each}
 	</div>
 
-	<h2 class="text-2xl font-bold mb-8">Avril</h2>
 	{#await posts_promise}
 		<p>chargement</p>
 	{:then posts}
 		{#each posts as post}
 			<!-- content here -->
+			{#if parseInt(post.date.split("-")[1]) != lastMonth}
+				<h2 class="text-2xl font-bold mb-8">{months[parseInt(post.date.split("-")[1]) - 1]}</h2>
+
+				{(lastMonth = parseInt(post.date.split("-")[1])).toString().slice(0, 0)}
+			{/if}
 			<a class="mb-4" href="/sessions/{post.slug}">
 				<ListItem
 					title={post.title}
