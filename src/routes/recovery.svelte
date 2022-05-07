@@ -2,30 +2,36 @@
 	import { goto } from "$app/navigation";
 	import Modal from "$lib/components/Modal.svelte";
 
-	import Icon from "@iconify/svelte";
-	import { logIn } from "$lib/supabase/auth";
+	import { logOut, updateUser } from "$lib/supabase/auth";
 
-	let email = "";
 	let password = "";
+	let passwordVerification = "";
 
 	let error = "";
 
 	let loading = false;
 
 	async function submit() {
-		if (!email || !password) {
+		if (!password || !passwordVerification) {
 			error = "Veuillez remplir tous les champs";
+			return;
+		}
+		if (password !== passwordVerification) {
+			error = "Les mots de passe ne sont pas identiques";
 			return;
 		}
 
 		loading = true;
 
-		const result = await logIn(email, password);
+		const result = await updateUser(null, password);
 
-		if (!result) return goto("/");
+		if (!result.error) {
+			await logOut();
+			return goto("/login");
+		}
 
 		loading = false;
-		error = result.message;
+		error = result.error.message;
 	}
 </script>
 
@@ -37,38 +43,37 @@
 	/>
 {/if}
 
-
 <div class="bg-gray-50 h-full">
-	<a href="/" class="block pl-4 pt-2 flex items-center gap-2 uppercase font-semibold">
-		<Icon icon="mdi:keyboard-backspace" />
-		retour
-	</a>
 	<div class="max-w-2xl mx-auto py-6 px-4 sm:px-6 lg:py-6 lg:px-8">
 		<h1 class="text-2xl text-center font-extrabold tracking-tight text-gray-900 sm:text-3xl mb-8">
-			Connection
+			Mot de passe oublié
 		</h1>
 
 		<form action="" class="flex flex-col gap-2" on:submit|preventDefault={submit}>
 			<div>
-				<label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-				<div class="mt-1 relative rounded-md shadow-sm">
-					<input
-						type="email"
-						id="email"
-						name="email"
-						bind:value={email}
-						class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 pr-12 sm:text-sm border-gray-300 rounded-md"
-					/>
-				</div>
-			</div>
-			<div>
-				<label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+				<label for="password" class="block text-sm font-medium text-gray-700"
+					>Nouveau mot de passe</label
+				>
 				<div class="mt-1 relative rounded-md shadow-sm">
 					<input
 						type="password"
 						id="password"
 						name="password"
 						bind:value={password}
+						class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 pr-12 sm:text-sm border-gray-300 rounded-md"
+					/>
+				</div>
+			</div>
+			<div>
+				<label for="password-verification" class="block text-sm font-medium text-gray-700"
+					>Encore une fois</label
+				>
+				<div class="mt-1 relative rounded-md shadow-sm">
+					<input
+						type="password"
+						id="password-verification"
+						name="password-verification"
+						bind:value={passwordVerification}
 						class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 pr-12 sm:text-sm border-gray-300 rounded-md"
 					/>
 				</div>
@@ -82,14 +87,9 @@
 							? 'opacity-50 cursor-not-allowed'
 							: ''}"
 					>
-						Se connecter
+						Changer le mot de passe
 					</button>
 				</div>
-			</div>
-			<div class="flex mx-auto gap-2">
-				<a href="/register" class="text-indigo-600 text-center">s'inscrire</a>
-				&dash;
-				<a href="/reset" class="text-indigo-600 text-center">mot de passe oublié</a>
 			</div>
 		</form>
 	</div>

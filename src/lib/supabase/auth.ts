@@ -1,8 +1,9 @@
-import type { ApiError, PostgrestError, User } from "@supabase/supabase-js";
+import type { ApiError, PostgrestError, Session, User } from "@supabase/supabase-js";
 import { writable } from "svelte/store";
 import { supabase } from "./client";
 import type { IMember } from "./members";
 
+export const access_token = writable<string | null>(null);
 export const user = writable<(User & IMember) | null>(null);
 
 export async function signInWithEmail(
@@ -33,26 +34,51 @@ export async function signInWithEmail(
 	return { ...memberResult.data.at(0), ...authResult.user };
 }
 
-export async function logOut(
-) {
+export async function logOut() {
 	supabase.auth.signOut();
 	user.set(null);
 }
 export async function logIn(
 	email: string,
 	password: string,
-): Promise<{ member?: IMember; error?: PostgrestError | ApiError }> {
+): Promise<PostgrestError | ApiError | void> {
 	const authResult = await supabase.auth.signIn({
 		email: email,
 		password: password,
 	});
 
-	if (authResult.error) return { error: authResult.error };
+	if (authResult.error) return authResult.error;
 
 	const memberResult = await supabase.from("members").select("*").eq("uuid", authResult.user.id);
 
-	if (memberResult.error) return { error: memberResult.error };
+	if (memberResult.error) return memberResult.error;
 
 	user.set({ ...memberResult.data.at(0), ...authResult.user });
-	return { ...memberResult.data.at(0), ...authResult.user };
+}
+
+export async function loginFromUrl() {
+	const { data: session, error } = await supabase.auth.getSessionFromUrl({
+		storeSession: true,
+	});
+	return { error, session };
+}
+
+export async function updateUser(
+	email?: string,
+	password?: string,
+): Promise<{ error?: PostgrestError | ApiError }> {
+	const { user, error } = await supabase.auth.update({
+		email: email || "",
+		password: password || "",
+	});
+
+	return { error };
+}
+
+export async function resetPassword(email: string) {
+	const { error } = await supabase.auth.api.resetPasswordForEmail(email, {
+		redirectTo: "http://localhost:3000/",
+	});
+
+	return { error };
 }

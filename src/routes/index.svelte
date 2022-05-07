@@ -1,15 +1,41 @@
 <script lang="ts">
 	import { browser } from "$app/env";
+	import { page } from "$app/stores";
+	import { goto } from "$app/navigation";
+
+	import { access_token, loginFromUrl } from "$lib/supabase/auth";
 	import { getMembers, type IMember } from "$lib/supabase/members";
 	import Icon from "@iconify/svelte";
+	import { supabase } from "$lib/supabase/client";
+	import Modal from "$lib/components/Modal.svelte";
 
 	let membersPromise = Promise.resolve([] as IMember[]);
 	let error = "";
 
 	if (browser) {
 		membersPromise = getMembers();
+
+		if ($page.url.hash.includes("type=recovery")) {
+			loginFromUrl().then((result) => {
+				if (result.error) {
+					error = result.error.message;
+				} else {
+					goto("/recovery");
+				}
+			});
+		} else if ($page.url.hash.includes("error_code=404")) {
+			error = "Ce lien est trop vieux ou et n'est plus valide.";
+		}
 	}
 </script>
+
+{#if error}
+	<Modal
+		title="Erreur"
+		description="{error}<br/> vous pouvez me contacter via rafael.martinezcalvo@orange.fr"
+		on:close={() => (error = "")}
+	/>
+{/if}
 
 <div class="bg-gray-50 h-full">
 	<div
