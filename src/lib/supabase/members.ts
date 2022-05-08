@@ -16,6 +16,12 @@ export async function getMembers(): Promise<IMember[]> {
 
 	return members || [];
 }
+export async function getIncompleteMembers(): Promise<IMember[]> {
+	const { data: members, error } = await supabase.from("members").select("*").is("uuid", null);
+	if (error) throw error;
+
+	return members || [];
+}
 
 export async function register(
 	first_name: string,

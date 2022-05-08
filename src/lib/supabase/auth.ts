@@ -33,6 +33,27 @@ export async function signInWithEmail(
 
 	return { ...memberResult.data.at(0), ...authResult.user };
 }
+export async function completeAccount(id: number, email: string, password: string) {
+	const authResult = await supabase.auth.signUp({
+		email: email,
+		password: password,
+	});
+
+	if (authResult.error) return { error: authResult.error };
+
+	const memberResult = await supabase
+		.from("members")
+		.update({
+			uuid: authResult.user.id,
+		})
+		.eq("id", id);
+
+	if (memberResult.error) return { error: memberResult.error };
+
+	user.set({ ...memberResult.data.at(0), ...authResult.user });
+
+	return { ...memberResult.data.at(0), ...authResult.user };
+}
 
 export async function logOut() {
 	supabase.auth.signOut();
