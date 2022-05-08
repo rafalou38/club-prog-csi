@@ -27,7 +27,7 @@
 
 		if (!result.error) {
 			await logOut();
-			return goto("/login");
+			return goto("/auth/login");
 		}
 
 		loading = false;

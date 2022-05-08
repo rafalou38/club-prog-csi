@@ -87,9 +87,9 @@
 				</div>
 			</div>
 			<div class="flex mx-auto gap-2">
-				<a href="/register" class="text-indigo-600 text-center">s'inscrire</a>
+				<a href="/auth/register" class="text-indigo-600 text-center">s'inscrire</a>
 				&dash;
-				<a href="/reset" class="text-indigo-600 text-center">mot de passe oublié</a>
+				<a href="/auth/reset" class="text-indigo-600 text-center">mot de passe oublié</a>
 			</div>
 		</form>
 	</div>

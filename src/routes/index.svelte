@@ -20,7 +20,7 @@
 				if (result.error) {
 					error = result.error.message;
 				} else {
-					goto("/recovery");
+					goto("/auth/recovery");
 				}
 			});
 		} else if ($page.url.hash.includes("error_code=404")) {
@@ -49,7 +49,7 @@
 			<div class="mt-8 flex lg:mt-0 lg:flex-shrink-0">
 				<div class="inline-flex rounded-md shadow">
 					<a
-						href="/register"
+						href="/auth/register"
 						class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-semibold rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
 					>
 						S'inscrire
