@@ -98,7 +98,7 @@ export async function updateUser(
 
 export async function resetPassword(email: string) {
 	const { error } = await supabase.auth.api.resetPasswordForEmail(email, {
-		redirectTo: "http://localhost:3000/",
+		redirectTo: "https://club-prog-csi.netlify.app/",
 	});
 
 	return { error };
