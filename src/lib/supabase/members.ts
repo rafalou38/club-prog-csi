@@ -14,7 +14,7 @@ export async function getMembers(): Promise<IMember[]> {
 	const { data: members, error } = await supabase.from("members").select("*");
 	if (error) throw error;
 
-	return members || [];
+	return members.sort((a, b) => (a.created_at < b.created_at ? 0 : 1)) || [];
 }
 
 export async function register(
