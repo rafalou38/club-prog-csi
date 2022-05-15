@@ -1,0 +1,23 @@
+---
+title: Web fullstack
+date: 2022-05-12T14:00:00
+tags: [web, python, web-scrapping]
+description: Creation d'un site web avec un backend python et un frontend en JavaScript et SCSS
+image_url: https://res.cloudinary.com/dr844cxrp/image/upload/v1652642998/Screenshot_2022-05-15_at_21-29-45_JeuxGratuits_qoi26p.png
+
+layout: session
+---
+
+# {title}
+
+Nous avons realise un site web pour repertorier les differents jeux en reduction sur des sites comme **steam** ou **EpicGames**.
+Le site est compose:
+
+- d'un backend code en python
+  - Qui recuppere les differents jeux en reduction sur les differents sites en direct a l'aide de web-scrapping
+
+<iframe
+	style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; height: 500px; border-radius: 5px;"
+	src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FJQOdFdClxYsNw1hjN18Dtz%2FJeuxGratuits%3Fnode-id%3D0%253A1"
+	allowfullscreen
+></iframe>
