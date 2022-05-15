@@ -19,7 +19,7 @@
 		</a>
 	{:else}
 		<a
-			href="/register"
+			href="/auth/register"
 			class="flex items-center text-white gap-2 py-2 px-4  rounded hover:bg-indigo-500"
 		>
 			S'inscrire

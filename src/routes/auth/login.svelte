@@ -22,10 +22,10 @@
 
 		const result = await logIn(email, password);
 
-		if (!result.error) return goto("/");
+		if (!result) return goto("/");
 
 		loading = false;
-		error = result.error.message;
+		error = result.message;
 	}
 </script>
 
@@ -36,6 +36,7 @@
 		on:close={() => (error = "")}
 	/>
 {/if}
+
 
 <div class="bg-gray-50 h-full">
 	<a href="/" class="block pl-4 pt-2 flex items-center gap-2 uppercase font-semibold">
@@ -85,7 +86,11 @@
 					</button>
 				</div>
 			</div>
-			<a href="/register" class="text-indigo-600 text-center">je n'ai pas de compte</a>
+			<div class="flex mx-auto gap-2">
+				<a href="/auth/register" class="text-indigo-600 text-center">s'inscrire</a>
+				&dash;
+				<a href="/auth/reset" class="text-indigo-600 text-center">mot de passe oublié</a>
+			</div>
 		</form>
 	</div>
 </div>

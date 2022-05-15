@@ -16,6 +16,12 @@ export async function getMembers(): Promise<IMember[]> {
 
 	return members.sort((a, b) => (a.created_at < b.created_at ? 0 : 1)) || [];
 }
+export async function getIncompleteMembers(): Promise<IMember[]> {
+	const { data: members, error } = await supabase.from("members").select("*").is("uuid", null);
+	if (error) throw error;
+
+	return members || [];
+}
 
 export async function register(
 	first_name: string,

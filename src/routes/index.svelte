@@ -1,15 +1,41 @@
 <script lang="ts">
 	import { browser } from "$app/env";
+	import { page } from "$app/stores";
+	import { goto } from "$app/navigation";
+
+	import { access_token, loginFromUrl } from "$lib/supabase/auth";
 	import { getMembers, type IMember } from "$lib/supabase/members";
 	import Icon from "@iconify/svelte";
+	import { supabase } from "$lib/supabase/client";
+	import Modal from "$lib/components/Modal.svelte";
 
 	let membersPromise = Promise.resolve([] as IMember[]);
 	let error = "";
 
 	if (browser) {
 		membersPromise = getMembers();
+
+		if ($page.url.hash.includes("type=recovery")) {
+			loginFromUrl().then((result) => {
+				if (result.error) {
+					error = result.error.message;
+				} else {
+					goto("/auth/recovery");
+				}
+			});
+		} else if ($page.url.hash.includes("error_code=404")) {
+			error = "Ce lien est trop vieux ou et n'est plus valide.";
+		}
 	}
 </script>
+
+{#if error}
+	<Modal
+		title="Erreur"
+		description="{error}<br/> vous pouvez me contacter via rafael.martinezcalvo@orange.fr"
+		on:close={() => (error = "")}
+	/>
+{/if}
 
 <div class="bg-gray-50 h-full">
 	<div
@@ -23,7 +49,7 @@
 			<div class="mt-8 flex lg:mt-0 lg:flex-shrink-0">
 				<div class="inline-flex rounded-md shadow">
 					<a
-						href="/register"
+						href="/auth/register"
 						class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-semibold rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
 					>
 						S'inscrire

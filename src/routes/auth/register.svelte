@@ -142,7 +142,7 @@
 					</button>
 				</div>
 			</div>
-			<a href="/login" class="text-indigo-600 text-center">j'ai deja un compte</a>
+			<a href="/auth/login" class="text-indigo-600 text-center">j'ai deja un compte</a>
 		</form>
 	</div>
 </div>
