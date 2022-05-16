@@ -10,14 +10,325 @@ layout: session
 
 # {title}
 
-Nous avons realise un site web pour repertorier les differents jeux en reduction sur des sites comme **steam** ou **EpicGames**.
+Nous avons réalise un site web pour répertorier les différents jeux en reduction sur des sites comme **steam** ou **EpicGames**.
 Le site est compose:
 
-- d'un backend code en python
-  - Qui recuppere les differents jeux en reduction sur les differents sites en direct a l'aide de web-scrapping
+- d'un backend (API) code en python
+  - Qui récupère les différents jeux en reduction sur les différents sites en direct a l'aide de web-scrapping
+  - Qui communique les résultats sous la forme d'une API rest utilisant flask.
+- D'un frontend en JavaScript et SCSS
+  - Qui permet de visualiser les jeux en reduction sur les sites web.
+  - Fait des requêtes a l'api pour récupérer les données.
+
+## MindMap
+
+Nous avons commence le projet avec une carte mentale réalisée en collaboration sur FigJam.
+Nous avons ainsi récupéré les différentes url des sites affichant les jeux gratuits.
 
 <iframe
 	style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; height: 500px; border-radius: 5px;"
 	src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FJQOdFdClxYsNw1hjN18Dtz%2FJeuxGratuits%3Fnode-id%3D0%253A1"
 	allowfullscreen
 ></iframe>
+
+## Design
+
+A continuation nous nous sommes attelées au **DESIGN** du site.
+Afin de se faire un idée de ce que nous voulions, nous avons réalisé un prototype de la page à l'aide du logiciel Figma.
+
+<iframe 
+	style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; height: 500px; border-radius: 5px;" 
+	src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FfTOL8Qi91SJJVAoQFBtj4g%2FJeuxGratuits%3Fnode-id%3D2%253A2" 
+	allowfullscreen
+></iframe>
+
+## Backend
+
+Notre backend est une API REST avec flask qui transmets les jeux en réduction.
+
+### API
+
+#### Qu'est ce qu'une API ?
+
+API est l'acronyme de **A**pplication **P**rogramming **I**nterface
+
+Une api est un serveur web comme un autre à l'exception qu'il n'est pas prévu pour être utilisé par un utilisateur en y accédant via une URL.
+
+Une API est conçue pour être utilisée par d'autres applications comme un site web, une application, ou même un autre serveur web.
+
+Il existe de nombreuses API pour récupérer toutes sortes d'informations.
+
+- Voila quelques examples:
+  - API **météo**: https://openweathermap.org/api
+  - API **finance**: https://www.alphavantage.co/
+  - API **info coronavirus**: https://coronavirus-tracker-api.herokuapp.com/
+  - API de **films**: https://www.omdbapi.com/ ou https://imdb-api.com/API
+
+> NOTE: Ici je parle uniquement des API **REST**, il en existe d'autres types mais il sont moins utilisés et intéressant dans notre cas.
+
+#### Les données
+
+Les API utilisent des formats de données variées en fonction des usages mais le principal est le JSON.
+
+Le json est un format pratique car il est facile à lire et à manipuler autant par un humain que par un ordinateur.
+
+Il se structure de cette manière:
+
+```json
+{
+	"clé": "valeur",
+	"nombre": 1,
+	"liste": [
+		"valeur1",
+		"valeur2",
+		"valeur3"
+	]
+	"objet": {
+		"clé1": "valeur1",
+		"clé2": "valeur2"
+	}
+}
+```
+
+C'est un format très modulable et facile à comprendre, il est similaire a la facon dont sont stockées les données dans un programme JavaScript d'ou son nom: **J**ava**S**cript **O**bject **S**tructure **N**otation.
+
+Ainsi pour notre api, nous avons utilisé la structure suivante:
+
+```json
+[
+	{
+		"name": "Nom du jeu",
+		"imageURl": "url de l'image du jeu",
+		"gameLink": "lien menant vers le jeu",
+		"platform": "De que site web ce jeu provient"
+	},
+	{
+		"name": "Nom du jeu",
+		"imageURl": "url de l'image du jeu",
+		"gameLink": "lien menant vers le jeu",
+		"platform": "De que site web ce jeu provient"
+	},
+	...
+]
+```
+
+### Web scrapping
+
+Pour récupérer les informations des jeux pour notre API nous avons du faire du **web-scrapping**.
+
+Le web-scrapping consiste à récupérer des informations sur un site web en utilisant des outils comme **selenium** ou **requests**.
+
+On analyse le code html que nous que nous envoie un site web et on récupère les informations qui nous intéressent.
+
+Cependant, le web-scrapping est un outil à utiliser avec parcimonie car un nombre trop élevé de requêtes peut être nocif pour le site web ciblé l’empêchant de fonctionner pour un court instant. Dans le cas de steam ou epic games le problème ne se pose pas car il sont adaptées et possèdent l'infrastructure suffisante pour encaisser de nombreuses requêtes. Mais il peuvent tout de meme bloquer l’accès a l'IP du web-scrapper pour protéger leur site.
+
+Dans notre cas les url qui nous intéressent sont les suivantes:
+
+- steam: https://store.steampowered.com/search/results?force_infinite=1&maxprice=free&specials=1
+- epic games: https://store.epicgames.com/fr/free-games
+
+Dans notre API nous avons utilisé python:
+
+Nous utilisons deux librairies:
+
+- **requests** qui nous permets de réaliser des "requêtes" web comme le fait un navigateur.
+- **bs4** (BeautifulSoup) qui nous permets de lire analyser et selection des elements dans du code html
+
+Après analyse de la page steam:
+
+```html
+<a
+	href="https://store.steampowered.com/app/756010/Stellaris_Humanoids_Species_Pack/?snr=1_7_7_2300_150_1"
+	data-ds-appid="756010"
+	class="search_result_row ds_collapse_flag "
+>
+	<div class="col search_capsule">
+		<img
+			src="https://cdn.cloudflare.steamstatic.com/steam/apps/756010/capsule_sm_120.jpg?t=1652373588"
+		/>
+	</div>
+	<div class="responsive_search_name_combined">
+		<div class="col search_name ellipsis">
+			<span class="title">Stellaris: Humanoids Species Pack</span>
+			<div>
+				<span class="platform_img win"></span><span class="platform_img mac"></span
+				><span class="platform_img linux"></span>
+			</div>
+		</div>
+	</div>
+
+	<div style="clear: left;"></div>
+</a>
+<!-- 
+	J'ai réduit le code html pour retirer ce qui ne nous intéressait pas, pour voir le code complet ouvrez l'url suivante:
+ 	view-source:https://store.steampowered.com/search/results?force_infinite=1&specials=1&maxprice=5 
+ -->
+```
+
+On peut constater que chaque jeu à:
+
+- la classe `search_result_row`
+- un attribut `data-ds-appid` avec l'id du jeu.
+- un tag `<img>` avec en src un lien d'image.
+- un tag avec la classe `title` contenant le titre du jeu.
+- Ainsi que d'autres informations que nous n'utilisons pas.
+
+Maintenant que l'on sait tout ca on peut écrire le web-scrapper 🕷️
+
+> NOTE: Pour sélectionner les elements on utilise des **sélecteurs css** donc pour une classe ".nom" , pour un id "#nom" et pour un tag "nom"
+
+```python
+import requests
+from bs4 import BeautifulSoup
+
+def fetchGames():
+	# On récupère le code html de la page
+    response = requests.get(
+        "https://store.steampowered.com/search/results?force_infinite=1&specials=1&maxprice=5"
+        # "https://store.steampowered.com/search/results?force_infinite=1&maxprice=free&specials=1"
+    )
+
+	# On le passe dans un object BeautifulSoup qui pourra être analysé
+    soup = BeautifulSoup(response.text, "html.parser")
+
+	# on récupère tous les jeux
+	elements = soup.select(".search_result_row")
+
+    games = []
+
+    for element in elements:
+		# pour chaque element jeu on récupère le nom, l'image et le lien.
+
+        title = element.select_one(".title").text
+
+		# On aurait pu utiliser le "src" du tag "image" mais l'image n'est pas de bonne résolution donc on récupère l'id du jeu et génère un url d'image plus grande.
+        appID = element.get("data-ds-appid")
+        imageURL = (
+            f"https://cdn.cloudflare.steamstatic.com/steam/apps/{appID}/header.jpg"
+        )
+        gameLink = element.get("href")
+
+		# On crée l'objet qui finira dans le JSON
+        game = {
+            "name": title,
+            "imageURL": imageURL,
+            "gameLink": gameLink,
+            "platform": "steam",
+        }
+
+        games.append(game)
+
+    return games
+```
+
+### Serveur web
+
+Maintenant qu'on peut récupérer ces informations il faut les rendre accessible au web, pour ça on utilise **Flask**, une libraire qui nous permets de faire des serveurs web en python facilement.
+
+```python
+# On importe les fonctions réalisées précédemment
+import steam
+import epic
+
+# Ainsi que la librairie flask
+from flask import jsonify
+from flask_cors import CORS
+
+from flask import Flask
+
+app = Flask(__name__)
+CORS(app)
+
+
+# On crée une route, chemin dans l'url "/" qui sera donc accesible a https://mon-api.fr"/"
+@app.route("/")
+def hello_world():
+    games = []
+
+	# J'utilise des try except pour palier à l’éventualité d'un bloquage par ces sites et garder l'API en fonctionnement
+	try:
+        steamGames = steam.fetchGames()
+        games.append(steamGames)
+    except Exception as e:
+        print(e)
+    try:
+        epicGames = epic.fetchGames()
+        games.append(epicGames)
+    except Exception as e:
+        print(e)
+
+
+	# On transforme la liste de jeux en document JSON qu'on retourne comme réponse à la requête
+    return jsonify([*steamGames, *epicGames])
+```
+
+Vous pouvez voir les résultats de l'api à cette url: https://jeuxgratuits-api.herokuapp.com/
+
+Le code est disponible ici: https://github.com/Club-programmation-CSI/jeux-gratuits/tree/master/API
+
+## Frontend
+
+Finalement il à fallu réaliser un frontend, un site web pour afficher les résultats de l'api aux utilisateurs.
+
+Je passe le développement de l'interface car ce n'est pas le plus important et que ce serait trop long de tout montrer ici.
+
+La communication avec notre API se fait dans le fichier `scripts/index.js `
+
+Ce programme est séparé en tris parties:
+
+- **fetchGames** fait appel a notre API puis lis le résultat json
+- **buildGameHtml** génère le code html que nous affichons dans la page pour chaque jeu
+- **loadGames** est la fonction principale elle appelle les deux autres et ajoute l'html des jeux dans la page.
+
+```js
+const API_URL = "https://jeuxgratuits-api.herokuapp.com/";
+
+async function fetchGames() {
+	// on utilise la fonction fetch pour communiquer avec une API
+	const reply = await fetch(API_URL);
+	// après avoir obtenu le résultat de l'api on lis le JSON
+	const data = await reply.json();
+	return data;
+}
+
+function buildGameHtml(game) {
+	return `
+        <a class="game" href="${game.gameLink}">
+          <img
+            src="${game.imageURL}"
+            alt=""
+          />
+          <h2>${game.name}</h2>
+        </a>
+    `;
+}
+
+async function loadGames() {
+	console.log("loading games");
+	// On récupere les jeux de l'API
+	const games = await fetchGames();
+
+	// On prends les references des conteneurs de la page pour les jeux steam
+	const steamContainer = document.querySelector("#steam-container");
+	// Et epic games
+	const epicGamesContainer = document.querySelector("#epic-games-container");
+
+	for (const game of games) {
+		if (game.platform === "steam") {
+			steamContainer.innerHTML += buildGameHtml(game);
+		} else if (game.platform === "epic games") {
+			epicGamesContainer.innerHTML += buildGameHtml(game);
+		}
+	}
+}
+
+// On appelle la fonction principale.
+loadGames();
+```
+
+Le site fini est disponible à cette url: https://jeuxgratuits.netlify.app/
+le code du frontend est disponible ici: https://github.com/Club-programmation-CSI/jeux-gratuits/tree/master/WEBSITE
+
+Fini 🎊
+
+Tout le code est ici: https://github.com/Club-programmation-CSI/jeux-gratuits
