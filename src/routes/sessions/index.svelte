@@ -8,6 +8,12 @@
 	const posts_promise = getPosts();
 
 	let lastMonth: number;
+
+	function isFirstOfMonth(month: number) {
+		if (month == lastMonth) return false;
+		lastMonth = month;
+		return true;
+	}
 </script>
 
 <div class="flex flex-col relative min-h-full max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:pt-8 lg:px-8">
@@ -22,11 +28,8 @@
 		<p>chargement</p>
 	{:then posts}
 		{#each posts as post}
-			<!-- content here -->
-			{#if parseInt(post.date.split("-")[1]) != lastMonth}
+			{#if isFirstOfMonth(parseInt(post.date.split("-")[1]))}
 				<h2 class="text-2xl font-bold mb-8">{months[parseInt(post.date.split("-")[1]) - 1]}</h2>
-
-				{(lastMonth = parseInt(post.date.split("-")[1])).toString().slice(0, 0)}
 			{/if}
 			<a class="mb-4" href="/sessions/{post.slug}">
 				<ListItem
