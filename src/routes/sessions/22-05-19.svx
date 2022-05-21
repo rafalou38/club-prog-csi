@@ -3,29 +3,32 @@ title: Sierpiński
 date: 2022-05-19T13:00:00
 tags: [processing]
 description: Réalisation du triangle de Sierpiński
-image_url: 
+image_url: https://res.cloudinary.com/dr844cxrp/image/upload/v1653155207/club_qufs45.gif
 
 layout: session
 ---
 
-
 # {title}
 
-Lors de cette session, nous avons réalisé la fractale de Sierpiński, un emboitement de triangles très facile à réaliser.
+Lors de cette session, nous avons réalisé la fractale de Sierpiński, un emboîtement de triangles très facile à réaliser.
+
+<iframe src="https://editor.p5js.org/rafalou38/full/ibNpQGeMm" style="width: 100%; height: 400px;"></iframe>
 
 ## Algorithme
 
 Pour réaliser cette fractale, il faut :
 
-  1. Choisir trois points idéalement équidistants pour faire un triangle isocèle, mais ce n'est pas obligatoire.
-    1. Pour cela, nous avons choisi trois points aléatoires dans le canevas.
-  2. On commence sur un des points
-  3. Repeter inddefiniment:
-    1. Choisir un des points du triangle
-    2. se déplacer à l'emplacement entre l'emplacement actuel et le point sélectionné
-    3. peindre le pixel à la position actuelle
+1. Choisir trois points idéalement équidistants pour faire un triangle isocèle, mais ce n'est pas obligatoire.
+2. Pour cela, nous avons choisi trois points aléatoires dans le canevas.
+3. On commence sur un des points
+4. Répéter indéfiniment:
+   1. Choisir un des points du triangle
+   2. se déplacer à l'emplacement entre l'emplacement actuel et le point sélectionné
+   3. peindre le pixel à la position actuelle
 
 ## Code
+
+### Processing:
 
 ```java
 PVector pointA;
@@ -35,18 +38,18 @@ PVector pointC;
 PVector p;
 
 void setup() {
-  size(400, 400);
+  size(600, 600);
   pointA = new PVector(
-    random(0, width),
-    random(0, height)
+    width/2,
+    0
     );
   pointB = new PVector(
-    random(0, width),
-    random(0, height)
+    0,
+    height * 3/4
     );
   pointC = new PVector(
-    random(0, width),
-    random(0, height)
+    width,
+    height * 3/4
     );
 
   p = new PVector(
@@ -63,13 +66,46 @@ void draw() {
 
   strokeWeight(1);
 
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < 500; i++) {
     point(p.x, p.y);
 
-    int choice = round(random(3));
-    if (choice == 0) p = p.lerp(pointA, 0.75);
-    if (choice == 1) p = p.lerp(pointB, 0.75);
-    if (choice == 2) p = p.lerp(pointC, 0.75);
+    int choice = floor(random(3));
+    if (choice == 0) p = p.lerp(pointA, 0.5);
+    if (choice == 1) p = p.lerp(pointB, 0.5);
+    if (choice == 2) p = p.lerp(pointC, 0.5);
   }
+}
+```
+
+### p5.js:
+
+```js
+let pointA;
+let pointB;
+let pointC;
+let p;
+
+function setup() {
+	createCanvas(600, 600);
+	pointA = createVector(width / 2, 0);
+	pointB = createVector(0, (height * 3) / 4);
+	pointC = createVector(width, (height * 3) / 4);
+	p = createVector(pointA.x, pointA.y);
+	background(255);
+}
+
+function draw() {
+	strokeWeight(5);
+	point(pointA.x, pointA.y);
+	point(pointB.x, pointB.y);
+	point(pointC.x, pointC.y);
+	strokeWeight(1);
+	for (var i = 0; i < 500; i++) {
+		point(p.x, p.y);
+		var choice = floor(random(3));
+		if (choice == 0) p = p.lerp(pointA, 0.5);
+		if (choice == 1) p = p.lerp(pointB, 0.5);
+		if (choice == 2) p = p.lerp(pointC, 0.5);
+	}
 }
 ```
