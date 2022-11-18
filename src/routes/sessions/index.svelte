@@ -29,7 +29,9 @@
 	{:then posts}
 		{#each posts as post}
 			{#if isFirstOfMonth(parseInt(post.date.split("-")[1]))}
-				<h2 class="text-2xl font-bold mb-8">{months[parseInt(post.date.split("-")[1]) - 1]}</h2>
+				<h2 class="text-2xl font-bold mb-8">
+					{post.date.split("-")[0]} / {months[parseInt(post.date.split("-")[1]) - 1]}
+				</h2>
 			{/if}
 			<a class="mb-4" href="/sessions/{post.slug}">
 				<ListItem

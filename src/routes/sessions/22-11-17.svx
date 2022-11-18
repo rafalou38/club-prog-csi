@@ -1,0 +1,131 @@
+---
+title: Processing et OOP
+date: 2022-11-17T12:00:00
+tags: [processing, OOP]
+description: Réalisation de petits programmes processing et introduction a la programmation OOP.
+image_url: https://res.cloudinary.com/dr844cxrp/image/upload/v1668776056/test_f82s8e.tiff
+layout: session
+---
+
+# {title}
+
+Nous avons vu comment dessiner des cercles de couleur sur processing et comment les faire se déplacer.
+
+Nous en sommes arrivées a réalisers ces deux mini-projets:
+
+## Projet 1
+
+- Des bulles de couleurs sont placées aléatoirement sur l'écran.
+- La couleur est déterminée par la position.
+
+<iframe src="https://editor.p5js.org/rafalou38/full/zmZ3Qsfx_" style="width: 100%; height: 400px;"></iframe>
+
+### Code
+
+```java
+
+int i = 0;
+
+void setup() {
+  size(600, 500);
+}
+
+void draw() {
+  for (int j = 0; j<100; j++) {
+    float x = random(1);
+    float y = random(1);
+
+    noStroke();
+    fill(x*255, sqrt(x*y)*255, y*255);
+    circle(x*width, y*height, random(50));
+    i = i+1;
+  }
+}
+
+```
+
+
+# OOP
+
+Lors de cette session nous avons vu comment créer des classes.
+
+Elles nous permettent d'isoler notre code pour les boulle et de le repeter plus facilement.
+
+
+
+```java
+// Dans un deuxieme onglet:
+class NomObjet {
+  int attr;
+  NomObjet(int param){
+    attr = param;
+  }
+
+  // Fonction pour l'objet
+  void update(){
+    
+  }
+}
+
+NomObjet obj = new NomObjet(10);
+obj.update();
+```
+
+## Projet 2
+
+Des boulles de couleurs se déplacent et ont une couleur en fonction d'un perlinNoise.
+
+<iframe src="https://editor.p5js.org/rafalou38/full/MxYw9Htqw" style="width: 100%; height: 400px;"></iframe>
+
+Pour une version plus fluide éxécutez la version processing.
+
+
+### Code
+
+```java
+// Onglet principal
+int cnt = 100;
+
+Boulle balls[] = new Boulle[cnt];
+void setup() {
+  size(1000, 600);
+  noStroke();
+  for (int i = 0; i < cnt; i++) {
+    //balls[i] = new Boulle((int)random(100));
+    balls[i] = new Boulle(i*1000);
+  }
+}
+
+void draw() {
+
+  // fill(noise(0,0,i/100.0)*255);//gray
+  for (int i = 0; i < cnt; i++) {
+    balls[i].update();
+  }
+}
+```
+```java
+// Onglet boulle
+float scale = 1.25;
+
+class Boulle {
+  int i = 0;
+  int seed = 0;
+  Boulle(int seed) {
+    //i=setI;
+    this.i = seed;
+    this.seed = seed;
+  }
+
+  void update() {
+    noiseSeed(seed);
+    noiseDetail(3);
+    fill(      noise(i/300.0, 0, 0)*255 * scale, noise(0, i/300.0, 0)*255*scale, noise(0, 0, i/300.0)*255*scale);
+    noiseSeed(seed+450);
+    //fill(noise(0,0,i/100.0)*255);//gray
+    circle(noise(0, i/300.0)*width*scale, noise(i/300.0, 0)*height*scale, 50);
+
+    i=i+1;
+  }
+}
+```
